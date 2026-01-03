@@ -1,4 +1,4 @@
-# IRL - Intent Representation Language
+# Clean Intent
 
 An AI-powered intent normalization layer that transforms vague prompts into clear, structured intents before sending them to AI systems like ChatGPT or Claude.
 
@@ -6,10 +6,10 @@ An AI-powered intent normalization layer that transforms vague prompts into clea
 
 AI prompts are often ambiguous, contradictory, or underspecified. This leads to unpredictable responses and wasted back-and-forth.
 
-**Before IRL:**
+**Before:**
 > "Write me something about dogs that's not too long but comprehensive"
 
-**After IRL:**
+**After:**
 > "Write a 300-400 word informative overview about dogs as pets, covering basic care needs and temperament, targeted at first-time pet owners considering adoption."
 
 ## How It Works
@@ -24,7 +24,7 @@ AI prompts are often ambiguous, contradictory, or underspecified. This leads to 
 - **Intent Parsing** - Extracts goal, task type, audience, domain, and constraints
 - **Conflict Detection** - Identifies contradictory requirements (e.g., "short but comprehensive")
 - **Assumption Tracking** - Records assumptions made about ambiguous parts
-- **IRL Format** - Human-readable intent notation
+- **Clean Intent Format** - Human-readable intent notation
 - **Browser Extension** - Integrates directly into ChatGPT and Claude interfaces
 
 ## Tech Stack
