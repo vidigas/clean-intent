@@ -1,0 +1,375 @@
+/* Clean Intent - Injected Styles */
+
+/* Button injected into chat interfaces */
+.clean-intent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 8px;
+}
+
+.clean-intent-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.clean-intent-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Modal Overlay */
+.clean-intent-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  backdrop-filter: blur(4px);
+}
+
+/* Modal */
+.clean-intent-modal {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.clean-intent-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #27272a;
+}
+
+.clean-intent-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.clean-intent-close {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.clean-intent-close:hover {
+  color: #fff;
+}
+
+.clean-intent-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.clean-intent-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid #27272a;
+}
+
+/* Loading */
+.clean-intent-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.clean-intent-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #27272a;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.clean-intent-loading p {
+  color: #888;
+  margin: 0;
+}
+
+/* Summary */
+.clean-intent-summary {
+  background: rgba(99, 102, 241, 0.1);
+  border-left: 3px solid #6366f1;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.clean-intent-summary-label {
+  display: block;
+  font-size: 12px;
+  color: #6366f1;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.clean-intent-summary p {
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+}
+
+/* Questions */
+.clean-intent-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.clean-intent-question {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.clean-intent-question-header {
+  margin-bottom: 12px;
+}
+
+.clean-intent-question-text {
+  display: block;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.clean-intent-question-why {
+  display: block;
+  color: #666;
+  font-size: 12px;
+}
+
+.clean-intent-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clean-intent-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.clean-intent-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.clean-intent-option:has(input:checked) {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.clean-intent-option input {
+  accent-color: #6366f1;
+}
+
+.clean-intent-custom {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.clean-intent-custom::placeholder {
+  color: #555;
+}
+
+.clean-intent-custom:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+/* Buttons */
+.clean-intent-cancel {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clean-intent-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #444;
+}
+
+.clean-intent-apply,
+.clean-intent-use {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clean-intent-apply:hover,
+.clean-intent-use:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Result */
+.clean-intent-result-prompt {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.clean-intent-result-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.clean-intent-result-prompt p {
+  margin: 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.clean-intent-result-breakdown {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* IRL Format */
+.clean-intent-irl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+}
+
+.clean-intent-irl-line {
+  display: flex;
+  gap: 12px;
+}
+
+.clean-intent-irl-key {
+  color: #6366f1;
+  font-weight: 500;
+  min-width: 90px;
+}
+
+.clean-intent-irl-value {
+  color: #ccc;
+}
+
+.clean-intent-irl-constraints {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.clean-intent-irl-list {
+  margin: 4px 0 0 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.clean-intent-irl-list li {
+  color: #aaa;
+  position: relative;
+}
+
+.clean-intent-irl-list li::before {
+  content: '-';
+  position: absolute;
+  left: -16px;
+  color: #666;
+}
+
+/* Error */
+.clean-intent-error {
+  color: #ef4444;
+  margin: 0;
+}
+
+/* Notification */
+.clean-intent-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 12px 20px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999999;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s;
+}
+
+.clean-intent-notification.fade-out {
+  opacity: 0;
+}

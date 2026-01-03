@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean Intent</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        <span>Clean Intent</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="status">
+        <div class="status-dot"></div>
+        <span>Ready on supported sites</span>
+      </div>
+
+      <div class="supported-sites">
+        <h4>Supported Sites</h4>
+        <ul>
+          <li>
+            <span class="site-icon">🤖</span>
+            <span>ChatGPT</span>
+            <span class="site-status active">Active</span>
+          </li>
+          <li>
+            <span class="site-icon">🧠</span>
+            <span>Claude</span>
+            <span class="site-status active">Active</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="instructions">
+        <h4>How to use</h4>
+        <ol>
+          <li>Go to ChatGPT or Claude</li>
+          <li>Type your prompt</li>
+          <li>Click the "Clean Intent" button</li>
+          <li>Answer clarifying questions</li>
+          <li>Get your refined prompt!</li>
+        </ol>
+      </div>
+
+      <div class="settings-section">
+        <h4>Settings</h4>
+        <label class="setting-item">
+          <input type="checkbox" id="showBreakdown" checked>
+          <span>Show intent breakdown</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="https://cleanintent.com" target="_blank">Website</a>
+      <span class="version">v0.1.0</span>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
