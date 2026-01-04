@@ -166,9 +166,6 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToPricing = () => {
-    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const faqs = [
     {
@@ -206,11 +203,10 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
         </div>
         <div className="nav-center">
           <button className="nav-link" onClick={scrollToHowItWorks}>How it works</button>
-          <button className="nav-link" onClick={scrollToPricing}>Pricing</button>
           <button className="nav-link" onClick={scrollToDemo}>Demo</button>
         </div>
         <div className="nav-right">
-          <button className="nav-link">Sign in</button>
+          <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer" className="nav-link">GitHub</a>
           <button className="nav-cta" onClick={scrollToDemo}>Try it live</button>
         </div>
       </nav>
@@ -627,44 +623,6 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="pricing" id="pricing">
-        <span className="section-badge purple">Pricing</span>
-        <h2>Simple, transparent pricing</h2>
-        <p className="section-sub">Start free. Upgrade when you need more.</p>
-
-        <div className="pricing-grid">
-          <div className="pricing-card">
-            <h3>Free</h3>
-            <div className="price">$0<span>/month</span></div>
-            <p className="price-desc">Perfect for trying Clean Intent</p>
-            <ul>
-              <li><span className="check">✓</span> Limited clean intents per day</li>
-              <li><span className="check">✓</span> No account required</li>
-              <li><span className="check">✓</span> Basic clarification</li>
-              <li><span className="check">✓</span> Export as text</li>
-            </ul>
-            <button className="btn-secondary full">Start free</button>
-          </div>
-          <div className="pricing-card featured">
-            <span className="popular-badge">Most Popular</span>
-            <h3>Pro</h3>
-            <div className="price">$5<span>/month</span></div>
-            <p className="price-desc">For serious AI users</p>
-            <ul>
-              <li><span className="check">✓</span> <strong>Unlimited clean intents</strong></li>
-              <li><span className="check">✓</span> Save & reuse intent</li>
-              <li><span className="check">✓</span> Priority processing</li>
-              <li><span className="check">✓</span> Advanced clarification</li>
-              <li><span className="check">✓</span> Export to multiple formats</li>
-              <li><span className="check">✓</span> Team sharing (coming soon)</li>
-            </ul>
-            <button className="btn-primary full">Get started</button>
-          </div>
-        </div>
-
-        <p className="pricing-note">All plans include a 7-day money-back guarantee. Cancel anytime.</p>
-      </section>
 
       {/* Vision */}
       <section className="vision">
@@ -678,12 +636,12 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
       {/* Final CTA */}
       <section className="final-cta">
         <h2>Clean your intent.<br />Before the AI guesses.</h2>
-        <p>Join hundreds of AI users who've stopped rewriting prompts and started getting predictable results.</p>
+        <p>Stop rewriting prompts. Start getting predictable results.</p>
         <div className="cta-buttons">
           <button className="btn-primary" onClick={scrollToDemo}>Try it live</button>
-          <button className="btn-secondary" onClick={scrollToPricing}>View pricing</button>
+          <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer" className="btn-secondary">View on GitHub</a>
         </div>
-        <p className="cta-note">No signup required to try. No credit card needed.</p>
+        <p className="cta-note">Free and open source.</p>
       </section>
 
       {/* FAQ */}
@@ -718,20 +676,13 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
           <div className="footer-col">
             <h4>PRODUCT</h4>
             <a href="#how-it-works">How it works</a>
-            <a href="#pricing">Pricing</a>
             <a href="#demo">Demo</a>
             <a href="#faq">FAQ</a>
           </div>
           <div className="footer-col">
-            <h4>COMPANY</h4>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
-            <a href="#">Contact</a>
-          </div>
-          <div className="footer-col">
-            <h4>LEGAL</h4>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
+            <h4>PROJECT</h4>
+            <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/vidigas/clean-intent/issues" target="_blank" rel="noopener noreferrer">Issues</a>
           </div>
         </div>
       </footer>
