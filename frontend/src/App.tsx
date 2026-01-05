@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LandingPage } from './components/LandingPage';
 import './App.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const API_KEY_STORAGE_KEY = 'irl_api_key';
 
 interface Constraint {
@@ -84,7 +85,7 @@ function Demo({ onBack }: { onBack: () => void }) {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3001/v1/normalize', {
+      const response = await fetch(`${API_URL}/v1/normalize`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

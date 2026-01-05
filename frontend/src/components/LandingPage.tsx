@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './LandingPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 interface LandingPageProps {
   onTryDemo: () => void;
 }
@@ -73,7 +75,7 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
     setError(null);
     setFlowStep('clarifying');
     try {
-      const response = await fetch('http://localhost:3001/demo/clarify', {
+      const response = await fetch(`${API_URL}/demo/clarify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: demoInput }),
@@ -128,7 +130,7 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
     setError(null);
     setFlowStep('refining');
     try {
-      const response = await fetch('http://localhost:3001/demo/refine', {
+      const response = await fetch(`${API_URL}/demo/refine`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ originalInput: clarification.originalInput, answers }),
