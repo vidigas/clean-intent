@@ -348,6 +348,27 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
           {/* Result */}
           {flowStep === 'done' && refinedResult && (
             <>
+              {/* Show answered questions summary */}
+              {clarification && clarification.questions.length > 0 && (
+                <div className="flow-step-box qa-summary-box">
+                  <div className="flow-step-label">Your Answers</div>
+                  <div className="flow-step-content">
+                    <div className="qa-summary">
+                      {clarification.questions.map((q, idx) => (
+                        <div key={q.id} className="qa-item">
+                          <span className="qa-question">{q.question}</span>
+                          <span className="qa-answer">
+                            {answers[q.id]?.startsWith('custom:')
+                              ? answers[q.id].slice(7)
+                              : q.options.find(o => o.value === answers[q.id])?.label || answers[q.id]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flow-step-box result-box">
                 <div className="flow-step-label">Refined Prompt</div>
                 <div className="flow-step-content">
@@ -534,6 +555,20 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Extension Callout */}
+      <section className="extension-callout">
+        <div className="extension-box">
+          <div className="extension-icon">🧩</div>
+          <div className="extension-content">
+            <h3>Browser Extension</h3>
+            <p>Use Clean Intent directly inside ChatGPT and Claude. Clarify your prompts without leaving the chat.</p>
+          </div>
+          <a href="https://github.com/vidigas/clean-intent/tree/main/extension" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+            Get Extension
+          </a>
         </div>
       </section>
 
