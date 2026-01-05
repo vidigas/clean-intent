@@ -208,7 +208,6 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
           <button className="nav-link" onClick={scrollToDemo}>Demo</button>
         </div>
         <div className="nav-right">
-          <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer" className="nav-link">GitHub</a>
           <button className="nav-cta" onClick={scrollToDemo}>Try it live</button>
         </div>
       </nav>
@@ -568,8 +567,8 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
             <h3>Browser Extension</h3>
             <p>Use Clean Intent directly inside ChatGPT and Claude. Clarify your prompts without leaving the chat.</p>
           </div>
-          <a href="https://github.com/vidigas/clean-intent/tree/main/extension" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-            Get Extension
+          <a href="#" className="btn-secondary extension-btn">
+            Coming Soon
           </a>
         </div>
       </section>
@@ -676,9 +675,8 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
         <p>Stop rewriting prompts. Start getting predictable results.</p>
         <div className="cta-buttons">
           <button className="btn-primary" onClick={scrollToDemo}>Try it live</button>
-          <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer" className="btn-secondary">View on GitHub</a>
         </div>
-        <p className="cta-note">Free and open source.</p>
+        <p className="cta-note">Free to use. No signup required.</p>
       </section>
 
       {/* FAQ */}
@@ -717,9 +715,8 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
             <a href="#faq">FAQ</a>
           </div>
           <div className="footer-col">
-            <h4>PROJECT</h4>
-            <a href="https://github.com/vidigas/clean-intent" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://github.com/vidigas/clean-intent/issues" target="_blank" rel="noopener noreferrer">Issues</a>
+            <h4>CONTACT</h4>
+            <a href="mailto:hello@cleanintent.com">hello@cleanintent.com</a>
           </div>
         </div>
       </footer>

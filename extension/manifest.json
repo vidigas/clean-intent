@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Clean Intent",
-  "version": "0.1.0",
-  "description": "Clarify your prompts before sending to AI. Get consistent, predictable results.",
+  "name": "Clean Intent - AI Prompt Clarifier",
+  "version": "1.0.0",
+  "description": "Clarify your prompts before sending to ChatGPT or Claude. Answer quick questions, get predictable AI results. Stop rewriting prompts.",
   "permissions": [
     "activeTab",
     "storage"
