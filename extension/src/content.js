@@ -88,12 +88,6 @@ function injectButton(inputElement) {
   // Check if button already exists anywhere on page
   if (document.querySelector('.clean-intent-btn')) return;
 
-  const container = inputElement.closest(currentPlatform.config.containerSelector);
-  if (!container) {
-    console.log('[Clean Intent] Container not found for input');
-    return;
-  }
-
   const button = document.createElement('button');
   button.className = 'clean-intent-btn';
   button.innerHTML = `
@@ -112,17 +106,32 @@ function injectButton(inputElement) {
     handleCleanIntent(inputElement);
   });
 
-  // Try to find send button using platform-specific selector
-  const sendBtnSelector = currentPlatform.config.buttonContainerSelector;
-  const submitBtn = container.querySelector(sendBtnSelector) ||
-                    container.querySelector('button[type="submit"]') ||
-                    container.querySelector('button[data-testid="send-button"]') ||
-                    container.querySelector('button[aria-label*="Send"]');
+  // ChatGPT specific: find the button container (the row with mic/send buttons)
+  // Look for the parent that contains the voice/send buttons
+  let buttonRow = null;
 
-  if (submitBtn && submitBtn.parentElement) {
-    // Insert before send button
-    submitBtn.parentElement.insertBefore(button, submitBtn);
-    console.log('[Clean Intent] Button injected before send button');
+  if (currentPlatform.name === 'chatgpt') {
+    // Try to find the row containing the send/voice buttons
+    // ChatGPT uses a structure like: form > div > div > [buttons]
+    const form = document.querySelector('form');
+    if (form) {
+      // Find the div that contains buttons with specific aria-labels
+      const allButtons = form.querySelectorAll('button');
+      for (const btn of allButtons) {
+        const ariaLabel = btn.getAttribute('aria-label') || '';
+        if (ariaLabel.includes('Send') || ariaLabel.includes('Voice') || btn.querySelector('svg')) {
+          // Found a button, get its parent row
+          buttonRow = btn.parentElement;
+          break;
+        }
+      }
+    }
+  }
+
+  if (buttonRow) {
+    // Insert at the beginning of the button row
+    buttonRow.insertBefore(button, buttonRow.firstChild);
+    console.log('[Clean Intent] Button injected in button row');
   } else {
     // Fallback: create floating button
     button.style.position = 'fixed';
