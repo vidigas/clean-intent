@@ -346,30 +346,41 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
             </div>
           )}
 
+          {/* Show answered questions summary - visible during refining and done */}
+          {(flowStep === 'refining' || flowStep === 'done') && clarification && clarification.questions.length > 0 && (
+            <div className="flow-step-box qa-summary-box">
+              <div className="flow-step-label">Your Answers</div>
+              <div className="flow-step-content">
+                <div className="qa-summary">
+                  {clarification.questions.map((q, idx) => (
+                    <div key={q.id} className="qa-item">
+                      <span className="qa-question">{q.question}</span>
+                      <span className="qa-answer">
+                        {answers[q.id]?.startsWith('custom:')
+                          ? answers[q.id].slice(7)
+                          : q.options.find(o => o.value === answers[q.id])?.label || answers[q.id]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Refining state - show loading */}
+          {flowStep === 'refining' && (
+            <div className="flow-step-box refining-box">
+              <div className="flow-step-label">Refining...</div>
+              <div className="flow-step-content">
+                <div className="refining-spinner"></div>
+                <p className="refining-text">Creating your refined prompt</p>
+              </div>
+            </div>
+          )}
+
           {/* Result */}
           {flowStep === 'done' && refinedResult && (
             <>
-              {/* Show answered questions summary */}
-              {clarification && clarification.questions.length > 0 && (
-                <div className="flow-step-box qa-summary-box">
-                  <div className="flow-step-label">Your Answers</div>
-                  <div className="flow-step-content">
-                    <div className="qa-summary">
-                      {clarification.questions.map((q, idx) => (
-                        <div key={q.id} className="qa-item">
-                          <span className="qa-question">{q.question}</span>
-                          <span className="qa-answer">
-                            {answers[q.id]?.startsWith('custom:')
-                              ? answers[q.id].slice(7)
-                              : q.options.find(o => o.value === answers[q.id])?.label || answers[q.id]}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
               <div className="flow-step-box result-box">
                 <div className="flow-step-label">Refined Prompt</div>
                 <div className="flow-step-content">
