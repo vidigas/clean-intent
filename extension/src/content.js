@@ -49,6 +49,7 @@ function detectPlatform() {
 let currentPlatform = null;
 let clarificationData = null;
 let modalElement = null;
+let userAnswers = {};
 
 // Initialize
 function init() {
@@ -247,6 +248,27 @@ function showModal(state, data = null) {
       </div>
     `;
   } else if (state === 'result') {
+    // Build Q&A summary HTML
+    const qaHtml = clarificationData && clarificationData.questions.length > 0 ? `
+      <div class="clean-intent-qa-summary">
+        <div class="clean-intent-result-label">YOUR ANSWERS</div>
+        <div class="clean-intent-qa-list">
+          ${clarificationData.questions.map(q => {
+            const answer = userAnswers[q.id];
+            const displayAnswer = answer?.startsWith('custom:')
+              ? answer.slice(7)
+              : q.options.find(o => o.value === answer)?.label || answer;
+            return `
+              <div class="clean-intent-qa-item">
+                <span class="clean-intent-qa-question">${q.question}</span>
+                <span class="clean-intent-qa-answer">${displayAnswer || 'N/A'}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    ` : '';
+
     content = `
       <div class="clean-intent-modal">
         <div class="clean-intent-modal-header">
@@ -254,6 +276,7 @@ function showModal(state, data = null) {
           <button class="clean-intent-close">&times;</button>
         </div>
         <div class="clean-intent-modal-body">
+          ${qaHtml}
           <div class="clean-intent-result-prompt">
             <div class="clean-intent-result-label">REFINED PROMPT</div>
             <p>${data.refinedPrompt}</p>
@@ -388,6 +411,10 @@ async function handleApply() {
     }
 
     const result = await response.json();
+
+    // Store answers for display
+    userAnswers = answers;
+
     showModal('result', result);
 
     // Store result for use
