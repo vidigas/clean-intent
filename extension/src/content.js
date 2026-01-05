@@ -129,8 +129,8 @@ function injectButton(inputElement) {
   }
 
   if (buttonRow) {
-    // Insert at the beginning of the button row
-    buttonRow.insertBefore(button, buttonRow.firstChild);
+    // Insert at the end of the button row (right side)
+    buttonRow.appendChild(button);
     console.log('[Clean Intent] Button injected in button row');
   } else {
     // Fallback: create floating button
