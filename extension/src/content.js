@@ -106,32 +106,30 @@ function injectButton(inputElement) {
     handleCleanIntent(inputElement);
   });
 
-  // ChatGPT specific: find the button container (the row with mic/send buttons)
-  // Look for the parent that contains the voice/send buttons
-  let buttonRow = null;
+  // ChatGPT specific: find the RIGHT-side button container (mic/send buttons)
+  let targetContainer = null;
+  let insertBeforeElement = null;
 
   if (currentPlatform.name === 'chatgpt') {
-    // Try to find the row containing the send/voice buttons
-    // ChatGPT uses a structure like: form > div > div > [buttons]
     const form = document.querySelector('form');
     if (form) {
-      // Find the div that contains buttons with specific aria-labels
-      const allButtons = form.querySelectorAll('button');
-      for (const btn of allButtons) {
-        const ariaLabel = btn.getAttribute('aria-label') || '';
-        if (ariaLabel.includes('Send') || ariaLabel.includes('Voice') || btn.querySelector('svg')) {
-          // Found a button, get its parent row
-          buttonRow = btn.parentElement;
-          break;
-        }
+      // Look for the mic button or send button (they're on the right side)
+      const micBtn = form.querySelector('button[aria-label*="Voice"], button[aria-label*="mic"], button[data-testid="voice-mode-button"]');
+      const sendBtn = form.querySelector('button[data-testid="send-button"], button[aria-label*="Send"]');
+
+      // Use mic button's parent if found, otherwise send button's parent
+      const rightSideBtn = micBtn || sendBtn;
+      if (rightSideBtn) {
+        targetContainer = rightSideBtn.parentElement;
+        insertBeforeElement = rightSideBtn; // Insert before the mic/send button
       }
     }
   }
 
-  if (buttonRow) {
-    // Insert at the end of the button row (right side)
-    buttonRow.appendChild(button);
-    console.log('[Clean Intent] Button injected in button row');
+  if (targetContainer) {
+    // Insert before the mic/send button (so it appears to the left of them, but on the right side of input)
+    targetContainer.insertBefore(button, insertBeforeElement);
+    console.log('[Clean Intent] Button injected on right side');
   } else {
     // Fallback: create floating button
     button.style.position = 'fixed';
