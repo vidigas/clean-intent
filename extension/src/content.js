@@ -50,6 +50,7 @@ let currentPlatform = null;
 let clarificationData = null;
 let modalElement = null;
 let userAnswers = {};
+let currentQuestionIndex = 0;
 
 // Initialize
 function init() {
@@ -165,6 +166,8 @@ async function handleCleanIntent(inputElement) {
     }
 
     clarificationData = await response.json();
+    userAnswers = {};
+    currentQuestionIndex = 0;
     showModal('questions', clarificationData);
   } catch (error) {
     console.error('[Clean Intent] Error:', error);
@@ -199,25 +202,45 @@ function showModal(state, data = null) {
       </div>
     `;
   } else if (state === 'questions') {
-    const questionsHtml = data.questions.map(q => `
-      <div class="clean-intent-question" data-id="${q.id}">
+    const currentQ = data.questions[currentQuestionIndex];
+    const isLastQuestion = currentQuestionIndex === data.questions.length - 1;
+
+    // Build answered questions (collapsed)
+    const answeredHtml = data.questions.slice(0, currentQuestionIndex).map((q, idx) => {
+      const answer = userAnswers[q.id];
+      const displayAnswer = answer?.startsWith('custom:')
+        ? answer.slice(7)
+        : q.options.find(o => o.value === answer)?.label || answer;
+      return `
+        <div class="clean-intent-answered">
+          <span class="clean-intent-answered-num">${idx + 1}</span>
+          <span class="clean-intent-answered-q">${q.question}</span>
+          <span class="clean-intent-answered-a">${displayAnswer}</span>
+        </div>
+      `;
+    }).join('');
+
+    // Build current question
+    const currentQuestionHtml = currentQ ? `
+      <div class="clean-intent-question" data-id="${currentQ.id}">
+        <div class="clean-intent-question-label">Question ${currentQuestionIndex + 1} of ${data.questions.length}</div>
         <div class="clean-intent-question-header">
-          <span class="clean-intent-question-text">${q.question}</span>
-          <span class="clean-intent-question-why">${q.why}</span>
+          <span class="clean-intent-question-text">${currentQ.question}</span>
+          <span class="clean-intent-question-why">${currentQ.why}</span>
         </div>
         <div class="clean-intent-options">
-          ${q.options.map(opt => `
+          ${currentQ.options.map(opt => `
             <label class="clean-intent-option">
-              <input type="radio" name="${q.id}" value="${opt.value}">
+              <input type="radio" name="${currentQ.id}" value="${opt.value}" ${userAnswers[currentQ.id] === opt.value ? 'checked' : ''}>
               <span>${opt.label}</span>
             </label>
           `).join('')}
-          ${q.allowCustom ? `
-            <input type="text" class="clean-intent-custom" placeholder="Or type your own..." data-question="${q.id}">
+          ${currentQ.allowCustom ? `
+            <input type="text" class="clean-intent-custom" placeholder="Or type your own..." data-question="${currentQ.id}" value="${userAnswers[currentQ.id]?.startsWith('custom:') ? userAnswers[currentQ.id].slice(7) : ''}">
           ` : ''}
         </div>
       </div>
-    `).join('');
+    ` : '';
 
     content = `
       <div class="clean-intent-modal">
@@ -230,13 +253,14 @@ function showModal(state, data = null) {
             <span class="clean-intent-summary-label">We understood:</span>
             <p>${data.summary}</p>
           </div>
+          ${answeredHtml ? `<div class="clean-intent-answered-list">${answeredHtml}</div>` : ''}
           <div class="clean-intent-questions">
-            ${questionsHtml}
+            ${currentQuestionHtml}
           </div>
         </div>
         <div class="clean-intent-modal-footer">
           <button class="clean-intent-cancel">Cancel</button>
-          <button class="clean-intent-apply">Apply Clean Intent</button>
+          <button class="clean-intent-next">${isLastQuestion ? 'Apply Clean Intent' : 'Next'}</button>
         </div>
       </div>
     `;
@@ -353,7 +377,7 @@ function showModal(state, data = null) {
   // Attach event listeners
   modalElement.querySelector('.clean-intent-close')?.addEventListener('click', closeModal);
   modalElement.querySelector('.clean-intent-cancel')?.addEventListener('click', closeModal);
-  modalElement.querySelector('.clean-intent-apply')?.addEventListener('click', handleApply);
+  modalElement.querySelector('.clean-intent-next')?.addEventListener('click', handleNext);
   modalElement.querySelector('.clean-intent-use')?.addEventListener('click', handleUsePrompt);
   modalElement.addEventListener('click', (e) => {
     if (e.target === modalElement) closeModal();
@@ -379,28 +403,42 @@ function closeModal() {
   }
 }
 
-// Handle Apply button
-async function handleApply() {
-  const answers = {};
+// Handle Next button (step through questions one at a time)
+function handleNext() {
+  const currentQ = clarificationData.questions[currentQuestionIndex];
 
-  // Collect answers from radio buttons and custom inputs
-  clarificationData.questions.forEach(q => {
-    const selectedRadio = modalElement.querySelector(`input[name="${q.id}"]:checked`);
-    const customInput = modalElement.querySelector(`.clean-intent-custom[data-question="${q.id}"]`);
+  // Get current answer
+  const selectedRadio = modalElement.querySelector(`input[name="${currentQ.id}"]:checked`);
+  const customInput = modalElement.querySelector(`.clean-intent-custom[data-question="${currentQ.id}"]`);
 
-    if (selectedRadio) {
-      answers[q.id] = selectedRadio.value;
-    } else if (customInput && customInput.value.trim()) {
-      answers[q.id] = `custom:${customInput.value.trim()}`;
-    }
-  });
+  let answer = null;
+  if (selectedRadio) {
+    answer = selectedRadio.value;
+  } else if (customInput && customInput.value.trim()) {
+    answer = `custom:${customInput.value.trim()}`;
+  }
 
-  // Check if all questions answered
-  if (Object.keys(answers).length < clarificationData.questions.length) {
-    showNotification('Please answer all questions');
+  if (!answer) {
+    showNotification('Please select an answer');
     return;
   }
 
+  // Store the answer
+  userAnswers[currentQ.id] = answer;
+
+  // Check if this was the last question
+  if (currentQuestionIndex === clarificationData.questions.length - 1) {
+    // All questions answered, refine
+    handleApply();
+  } else {
+    // Move to next question
+    currentQuestionIndex++;
+    showModal('questions', clarificationData);
+  }
+}
+
+// Handle Apply button (called after all questions answered)
+async function handleApply() {
   try {
     showModal('refining');
 
@@ -409,7 +447,7 @@ async function handleApply() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         originalInput: clarificationData.originalInput,
-        answers
+        answers: userAnswers
       })
     });
 
@@ -418,9 +456,6 @@ async function handleApply() {
     }
 
     const result = await response.json();
-
-    // Store answers for display
-    userAnswers = answers;
 
     showModal('result', result);
 

@@ -147,6 +147,60 @@
   font-size: 14px;
 }
 
+/* Answered Questions (collapsed) */
+.clean-intent-answered-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.clean-intent-answered {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #1a1a1d;
+  border: 1px solid #27272a;
+  border-radius: 10px;
+}
+
+.clean-intent-answered-num {
+  width: 22px;
+  height: 22px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.clean-intent-answered-q {
+  flex: 1;
+  color: #666;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clean-intent-answered-a {
+  color: #22c55e;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Questions */
 .clean-intent-questions {
   display: flex;
@@ -159,6 +213,13 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 16px;
+}
+
+.clean-intent-question-label {
+  font-size: 12px;
+  color: #6366f1;
+  font-weight: 500;
+  margin-bottom: 12px;
 }
 
 .clean-intent-question-header {
@@ -250,7 +311,8 @@
 }
 
 .clean-intent-apply,
-.clean-intent-use {
+.clean-intent-use,
+.clean-intent-next {
   padding: 10px 20px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border: none;
@@ -263,7 +325,8 @@
 }
 
 .clean-intent-apply:hover,
-.clean-intent-use:hover {
+.clean-intent-use:hover,
+.clean-intent-next:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
