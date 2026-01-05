@@ -3,23 +3,29 @@
 
 const API_BASE = 'http://localhost:3001';
 
-// Platform-specific selectors
+// Platform-specific selectors (updated for latest UIs)
 const PLATFORMS = {
   chatgpt: {
     host: ['chat.openai.com', 'chatgpt.com'],
-    inputSelector: '#prompt-textarea, textarea[data-id="root"]',
-    containerSelector: 'form',
-    getInputValue: (el) => el.value || el.textContent,
+    inputSelector: '#prompt-textarea, [id^="prompt-textarea"], div[contenteditable="true"][data-placeholder], textarea[placeholder*="Message"]',
+    containerSelector: 'form, [data-testid="composer-parent"], .relative.flex',
+    buttonContainerSelector: 'form button[data-testid="send-button"], form button[aria-label*="Send"], form > div > div > button',
+    getInputValue: (el) => el.value || el.textContent || el.innerText,
     setInputValue: (el, value) => {
-      el.value = value;
-      el.textContent = value;
+      if (el.tagName === 'TEXTAREA') {
+        el.value = value;
+      } else {
+        el.textContent = value;
+      }
       el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
     }
   },
   claude: {
     host: ['claude.ai'],
-    inputSelector: '[contenteditable="true"], .ProseMirror',
-    containerSelector: 'form, [data-testid="composer"]',
+    inputSelector: '[contenteditable="true"], .ProseMirror, div[data-placeholder]',
+    containerSelector: 'form, [data-testid="composer"], fieldset',
+    buttonContainerSelector: 'button[aria-label*="Send"], button[type="submit"]',
     getInputValue: (el) => el.textContent || el.innerText,
     setInputValue: (el, value) => {
       el.textContent = value;
@@ -78,11 +84,14 @@ function observeInputField() {
 
 // Inject Clean Intent button
 function injectButton(inputElement) {
-  const container = inputElement.closest(currentPlatform.config.containerSelector);
-  if (!container) return;
+  // Check if button already exists anywhere on page
+  if (document.querySelector('.clean-intent-btn')) return;
 
-  // Check if button already exists
-  if (container.querySelector('.clean-intent-btn')) return;
+  const container = inputElement.closest(currentPlatform.config.containerSelector);
+  if (!container) {
+    console.log('[Clean Intent] Container not found for input');
+    return;
+  }
 
   const button = document.createElement('button');
   button.className = 'clean-intent-btn';
@@ -92,7 +101,7 @@ function injectButton(inputElement) {
       <path d="M2 17l10 5 10-5"/>
       <path d="M2 12l10 5 10-5"/>
     </svg>
-    <span>Clean Intent</span>
+    <span>Clean</span>
   `;
   button.type = 'button';
 
@@ -102,12 +111,25 @@ function injectButton(inputElement) {
     handleCleanIntent(inputElement);
   });
 
-  // Insert button before the submit button or at end of form
-  const submitBtn = container.querySelector('button[type="submit"], button[data-testid="send-button"]');
-  if (submitBtn) {
+  // Try to find send button using platform-specific selector
+  const sendBtnSelector = currentPlatform.config.buttonContainerSelector;
+  const submitBtn = container.querySelector(sendBtnSelector) ||
+                    container.querySelector('button[type="submit"]') ||
+                    container.querySelector('button[data-testid="send-button"]') ||
+                    container.querySelector('button[aria-label*="Send"]');
+
+  if (submitBtn && submitBtn.parentElement) {
+    // Insert before send button
     submitBtn.parentElement.insertBefore(button, submitBtn);
+    console.log('[Clean Intent] Button injected before send button');
   } else {
-    container.appendChild(button);
+    // Fallback: create floating button
+    button.style.position = 'fixed';
+    button.style.bottom = '100px';
+    button.style.right = '20px';
+    button.style.zIndex = '999999';
+    document.body.appendChild(button);
+    console.log('[Clean Intent] Button injected as floating button (fallback)');
   }
 }
 
@@ -404,5 +426,9 @@ function showNotification(message) {
   }, 2000);
 }
 
-// Start
-init();
+// Start with delay to allow SPA to load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(init, 500));
+} else {
+  setTimeout(init, 500);
+}
