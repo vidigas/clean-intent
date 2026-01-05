@@ -108,8 +108,20 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
     }
   };
 
-  const handleAnswerChange = (questionId: string, value: string) => {
+  const handleAnswerChange = (questionId: string, value: string, autoAdvance = false) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
+
+    // Auto-advance to next question when selecting a radio option (not custom)
+    if (autoAdvance && !value.startsWith('custom:')) {
+      setTimeout(() => {
+        if (!clarification) return;
+        if (currentQuestionIndex < clarification.questions.length - 1) {
+          setCurrentQuestionIndex(prev => prev + 1);
+        } else {
+          handleRefine();
+        }
+      }, 300);
+    }
   };
 
   const handleNextQuestion = () => {
@@ -318,7 +330,7 @@ export function LandingPage({ onTryDemo }: LandingPageProps) {
                             name={currentQuestion.id}
                             value={opt.value}
                             checked={answers[currentQuestion.id] === opt.value}
-                            onChange={() => handleAnswerChange(currentQuestion.id, opt.value)}
+                            onChange={() => handleAnswerChange(currentQuestion.id, opt.value, true)}
                           />
                           <span>{opt.label}</span>
                         </label>

@@ -393,6 +393,14 @@ function showModal(state, data = null) {
       });
     });
   });
+
+  // Auto-advance when selecting a radio option
+  modalElement.querySelectorAll('.clean-intent-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      // Small delay so user can see their selection
+      setTimeout(() => handleNext(), 300);
+    });
+  });
 }
 
 // Close modal
